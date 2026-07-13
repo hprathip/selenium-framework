@@ -48,4 +48,18 @@ public class WaitUtils {
 		return wait.until(ExpectedConditions.titleContains(title));
 	}
 
+//	Wait for the specific text in element
+	public static boolean waitForSpecificTextInElement(WebDriver driver, By locator, String text, int timeoutSeconds) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutSeconds));
+
+		return wait.until(ExpectedConditions.textToBePresentInElementLocated(locator, text));
+	}
+
+//	Wait for the url to contain specific text
+	public static boolean waitForUrlToContain(WebDriver driver, String urlFragment, int timeout) {
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
+
+		return wait.until(ExpectedConditions.urlContains(urlFragment));
+	}
+
 }

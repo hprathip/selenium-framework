@@ -6,6 +6,11 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.Select;
+
+import com.automation.qa.utils.WaitUtils;
 
 public class ProductsPage {
 
@@ -18,9 +23,27 @@ public class ProductsPage {
 	private By cartIcon = By.className("shopping_cart_link");
 	private By cartBadge = By.className("shopping_cart_badge");
 
+	@FindBy(className = "product_sort_container")
+	private WebElement sortFilter;
+
+	@FindBy(xpath = "(//div[@class='inventory_item_name'])[1]")
+	private WebElement firstProductXpath;
+
 //	Constructor
 	public ProductsPage(WebDriver driver) {
 		this.driver = driver;
+		PageFactory.initElements(driver, this);
+	}
+
+	public void selectSortFilter(String filterString) {
+		Select sortFilterDD = new Select(sortFilter);
+
+		sortFilterDD.selectByVisibleText(filterString);
+	}
+
+	public String getFirstProductNameAfterSorting() {
+		return firstProductXpath.getText();
+
 	}
 
 //	Get page title text

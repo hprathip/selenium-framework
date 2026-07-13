@@ -2,6 +2,7 @@ package com.automation.qa.tests;
 
 import java.util.List;
 
+import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -10,6 +11,7 @@ import com.automation.qa.pages.CartPage;
 import com.automation.qa.pages.LoginPage;
 import com.automation.qa.pages.ProductsPage;
 import com.automation.qa.utils.ConfigReader;
+import com.automation.qa.utils.WaitUtils;
 
 public class ProductsTest extends BaseTest {
 
@@ -95,6 +97,27 @@ public class ProductsTest extends BaseTest {
 		Assert.assertEquals(itemsInCart, 1, "Expected 1 item in cart!");
 
 		System.out.println("Items in cart: " + itemsInCart);
+
+	}
+
+	@Test
+	public void testLowToHighFilter() {
+//		Login first
+		LoginPage loginPage = new LoginPage(driver);
+		loginPage.login(ConfigReader.getProperty("username"), ConfigReader.getProperty("password"));
+
+//		ProductPage landing
+		ProductsPage productsPage = new ProductsPage(driver);
+
+		productsPage.selectSortFilter("Price (low to high)");
+
+		WaitUtils.waitForSpecificTextInElement(driver, By.xpath("(//div[@class='inventory_item_name'])[1]"),
+				"Sauce Labs Onesie", 30);
+
+		String productAfterSorting = productsPage.getFirstProductNameAfterSorting();
+
+		Assert.assertEquals(productAfterSorting, "Sauce Labs Onesie",
+				"The page isn't sorted with the correct filter");
 
 	}
 
